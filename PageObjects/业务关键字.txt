@@ -1,0 +1,23 @@
+*** Settings ***
+Library           Selenium2Library    implicit_wait=5
+
+*** Keywords ***
+百度搜索
+    [Arguments]    ${search}    ${result}
+    open browser    https://www.baidu.com    CHROME
+    maximize browser window
+    Input Text    id=kw    ${search}
+    click element    id=su
+    sleep    2
+    ${title}    get title
+    should contain    ${title}    ${result}
+    Close Browser
+
+登录IW
+    [Arguments]    ${Username}    ${Password}
+    open browser    http://car.waysdata.com    CHROME
+    maximize browser window
+    Click Element    xpath=//*[@id="components-login-form"]/div[2]/div/div/span/p[1]
+    Input Text    css=#username    ${Username}
+    Input Text    css=#password    ${Password}
+    Click Element    css=#components-login-form > div.button.ant-row.ant-form-item > div > div > span > button

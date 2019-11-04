@@ -1,0 +1,40 @@
+*** Settings ***
+Library           Selenium2Library    implicit_wait=5
+Library           Screenshot    ${CURDIR}
+
+*** Keywords ***
+打开浏览器
+    [Arguments]    ${url}
+    open browser    ${url}    CHROME
+    maximize browser window
+
+输入框
+    [Arguments]    ${locator}    ${search}
+    Input Text    ${locator}    ${search}
+
+点击按钮
+    [Arguments]    ${locator}
+    click element    ${locator}
+
+等待
+    [Arguments]    ${time}
+    sleep    ${time}
+
+标题验证
+    [Arguments]    ${result}
+    sleep    1
+    ${title}    get title
+    should contain    ${title}    ${result}
+
+关闭浏览器
+    Close Browser
+
+打印
+    [Arguments]    ${text}
+    log    ${text}
+
+截图
+    sleep    1
+    Comment    Set Screenshot Directory    D:\    #设置图片保存的路径
+    Comment    Take Screenshot Without Embedding    #报告中显示图片的链接
+    Take Screenshot    width=500px    #图片将显示在报告中
