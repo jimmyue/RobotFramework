@@ -13,7 +13,7 @@ Library           Selenium2Library    implicit_wait=5
     should contain    ${title}    ${result}
     Close Browser
 
-登录IW
+登录
     [Arguments]    ${Username}    ${Password}
     open browser    http://car.waysdata.com    CHROME
     maximize browser window

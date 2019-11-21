@@ -1,6 +1,7 @@
 *** Settings ***
 Library           Selenium2Library    implicit_wait=5
 Library           Screenshot    ${CURDIR}
+Library           DatabaseLibrary
 
 *** Keywords ***
 打开浏览器
@@ -8,26 +9,24 @@ Library           Screenshot    ${CURDIR}
     open browser    ${url}    CHROME
     maximize browser window
 
+关闭浏览器
+    Close Browser
+
 输入框
     [Arguments]    ${locator}    ${search}
     Input Text    ${locator}    ${search}
 
-点击按钮
+点击元素
     [Arguments]    ${locator}
     click element    ${locator}
 
+点击按钮
+    [Arguments]    ${locator}
+    Click Button    ${locator}
+
 等待
-    [Arguments]    ${time}
+    [Arguments]    ${time}=1
     sleep    ${time}
-
-标题验证
-    [Arguments]    ${result}
-    sleep    1
-    ${title}    get title
-    should contain    ${title}    ${result}
-
-关闭浏览器
-    Close Browser
 
 打印
     [Arguments]    ${text}
@@ -38,3 +37,46 @@ Library           Screenshot    ${CURDIR}
     Comment    Set Screenshot Directory    D:\    #设置图片保存的路径
     Comment    Take Screenshot Without Embedding    #报告中显示图片的链接
     Take Screenshot    width=500px    #图片将显示在报告中
+
+获取Text
+    [Arguments]    ${locator}
+    ${Text}    Get Text    ${locator}
+    [Return]    ${Text}
+
+数据库查询
+    [Arguments]    ${sql}
+    Connect To Database Using Custom Params    cx_Oracle    'STRIDE','stride#96','172.16.1.37:1521/DBFM'
+    ${temp}    Query    ${sql}
+    ${result}    Set Variable    ${temp[0][0]}
+    Disconnect From Database
+    [Return]    ${result}
+
+跳转URL
+    [Arguments]    ${URL}
+    go to    ${URL}
+
+断言相等
+    [Arguments]    ${A}    ${B}
+    Should Be Equal As Strings    ${A}    ${B}
+
+断言包含
+    [Arguments]    ${A}    ${B}
+    Should contain    ${A}    ${B}
+
+断言标题
+    [Arguments]    ${result}
+    sleep    1
+    ${title}    get title
+    should contain    ${title}    ${result}
+
+断言数据库
+    [Arguments]    ${sql}    ${text}
+    Connect To Database Using Custom Params    cx_Oracle    'STRIDE','stride#96','172.16.1.37:1521/DBFM'
+    ${temp}    Query    ${sql}
+    Disconnect From Database
+    Should Be Equal As Strings    ${text}    ${temp[0][0]}
+
+断言Text
+    [Arguments]    ${locator}    ${Text}
+    ${temp}    Get Text    ${locator}
+    Should Be Equal As Strings    ${temp}    ${Text}
