@@ -1,1 +1,4 @@
 RobotFramework自定义库，需放在Python对应路径下 ..\Lib\site-packages
+
+使用docker部署的selenium远程机测试：
+open  browser  ${url}  gc  remote_url=http://10.10.10.71:4444/wd/hub
